@@ -7,7 +7,7 @@
 
   <div class="flex flex-col items-center py-10 w-full overflow-auto md:overflow-hidden">
     <div class="flex items-center">
-      <span class="mr-4 font-semibold text-4xl text-black dark:text-white">Welcome to Bookaroo</span>
+      <span class="mr-4 font-semibold text-4xl text-black dark:text-white">Welcome to Buk It Easy</span>
     </div>
   </div>
 </div>
