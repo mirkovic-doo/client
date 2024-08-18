@@ -11,6 +11,5 @@ export default ({ mode }: UserConfig) => {
       target: 'esnext',
     },
     plugins: [sveltekit()],
-    optimizeDeps: { exclude: ['bytemd'], include: ['debug', 'is-buffer', 'extend'] },
   });
 };
