@@ -47,6 +47,7 @@
     "@sentry/sveltekit": "7.73.0",
     "@types/lodash": "^4.17.0",
     "@zerodevx/svelte-toast": "0.9.5",
-    "axios": "1.5.0"
+    "axios": "1.5.0",
+    "firebase": "^10.13.0"
   }
 }
