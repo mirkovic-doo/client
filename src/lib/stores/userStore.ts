@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 
-import { User } from '$lib/types/user';
+import type { User } from '$lib/types/user';
 
 const authStore = writable<{
   isLoggedIn: boolean;
