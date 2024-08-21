@@ -10,7 +10,7 @@
  */
 
 export interface UserRequest {
-  username: string | null;
+  email: string | null;
   firstName: string | null;
   lastName: string | null;
   country: string | null;
@@ -23,7 +23,6 @@ export interface UserRequest {
 export interface UserResponse {
   /** @format uuid */
   id?: string;
-  username?: string | null;
   firstName?: string | null;
   lastName?: string | null;
   email?: string | null;
@@ -253,6 +252,20 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   /**
    * No description
    *
+   * @tags Health
+   * @name Get
+   * @request GET:/api/health
+   */
+  get = (params: RequestParams = {}) =>
+    this.request<void, any>({
+      path: `/api/health`,
+      method: 'GET',
+      ...params,
+    });
+
+  /**
+   * No description
+   *
    * @tags User
    * @name GetMe
    * @request GET:/api/user/me
@@ -328,22 +341,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         method: 'POST',
         body: data,
         type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-  };
-  username = {
-    /**
-     * No description
-     *
-     * @tags User
-     * @name GetEmailByUsername
-     * @request GET:/api/user/email/{username}
-     */
-    getEmailByUsername: (username: string, params: RequestParams = {}) =>
-      this.request<string, string>({
-        path: `/api/user/email/${username}`,
-        method: 'GET',
         format: 'json',
         ...params,
       }),
