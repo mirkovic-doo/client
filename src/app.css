@@ -3,7 +3,63 @@
 @tailwind utilities;
 
 :root {
-  --color-light-black: rgb(5, 5, 5);
+  --color-light-black: rgb(22, 21, 21);
   --color-light-gray: rgb(28, 28, 29);
   --color-dark-gray: rgb(43, 43, 45);
+
+  --color-bluish-gray-900: rgba(25, 30, 42, 1);
+  --color-bluish-gray-600: rgba(121, 127, 150, 1);
+  --color-bluish-gray-500: rgba(157, 162, 178, 1);
+  --color-bluish-gray-200: rgba(211, 219, 227, 1);
+  --color-bluish-gray-100: rgba(228, 233, 241, 1);
+  --color-bluish-gray-80: rgba(239, 244, 251, 1);
+  --color-bluish-gray-50: rgba(245, 247, 250, 1);
+
+  --color-grayscale-800: rgba(53, 53, 55, 1);
+  --color-grayscale-500: rgba(128, 128, 132, 1);
+  --color-grayscale-300: rgba(177, 177, 180, 1);
+  --color-grayscale-100: rgba(229, 229, 230, 1);
+  --color-grayscale-50: rgba(242, 242, 242, 1);
+
+  --color-purple-500: rgba(71, 42, 239, 1);
+  --color-purple-400: rgba(114, 90, 246, 1);
+  --color-purple-300: rgba(158, 142, 251, 1);
+  --color-purple-200: rgba(203, 194, 255, 1);
+  --color-purple-50: rgba(249, 248, 255, 1);
+
+  --color-blue-900: rgba(5, 31, 66, 1);
+  --color-blue-500: rgba(91, 158, 255, 1);
+  --color-blue-200: rgba(192, 217, 252, 1);
+  --color-blue-100: rgba(227, 238, 253, 1);
+  --color-blue-50: rgba(241, 246, 254, 1);
+
+  --color-green-700: rgba(23, 99, 80, 1);
+  --color-green-500: rgba(39, 166, 135, 1);
+  --color-green-200: rgba(156, 235, 213, 1);
+  --color-green-100: rgba(205, 243, 234, 1);
+  --color-green-50: rgba(230, 249, 244, 1);
+
+  --color-yellow-600: rgba(251, 205, 19, 1);
+  --color-yellow-500: rgba(252, 222, 83, 1);
+  --color-yellow-300: rgba(253, 231, 150, 1);
+  --color-yellow-100: rgba(255, 246, 220, 1);
+  --color-yellow-50: rgba(255, 251, 240, 1);
+
+  --color-orange-600: rgba(251, 127, 19, 1);
+  --color-orange-500: rgba(252, 164, 83, 1);
+  --color-orange-300: rgba(253, 196, 150, 1);
+  --color-orange-100: rgba(254, 234, 220, 1);
+  --color-orange-50: rgba(255, 246, 240, 1);
+
+  --color-red-700: rgba(134, 14, 18, 1);
+  --color-red-500: rgba(233, 14, 14, 1);
+  --color-red-300: rgba(247, 114, 119, 1);
+  --color-red-100: rgba(249, 210, 213, 1);
+  --color-red-50: rgba(251, 233, 235, 1);
+
+  --color-pink-800: rgba(87, 0, 43, 1);
+  --color-pink-700: rgba(173, 0, 75, 1);
+  --color-pink-500: rgba(234, 167, 181, 1);
+  --color-pink-300: rgba(242, 201, 212, 1);
+  --color-pink-100: rgba(251, 239, 242, 1);
 }

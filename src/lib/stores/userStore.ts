@@ -1,16 +1,9 @@
+import type { UserResponse } from '$lib/api/apiUser';
 import { writable } from 'svelte/store';
 
-import type { User } from '$lib/types/user';
-
-const authStore = writable<{
-  isLoggedIn: boolean;
-  user: User | null;
-}>({
-  isLoggedIn: false,
-  user: null,
-});
+const userStore = writable<UserResponse | null>();
 
 export default {
-  subscribe: authStore.subscribe,
-  set: authStore.set,
+  subscribe: userStore.subscribe,
+  set: userStore.set,
 };
