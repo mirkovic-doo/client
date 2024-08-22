@@ -53,7 +53,7 @@ jobs:
 
       - name: Bump version and push tag
         id: versioning
-        uses: anothrnick/github-tag-action@v1.38.0
+        uses: anothrNick/github-tag-action@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           default_bump: patch
