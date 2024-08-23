@@ -45,6 +45,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@microsoft/signalr": "^8.0.7",
     "@sentry/sveltekit": "7.73.0",
     "@types/lodash": "^4.17.0",
     "@zerodevx/svelte-toast": "0.9.5",
