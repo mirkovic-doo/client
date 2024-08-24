@@ -9,3 +9,6 @@ export const ROUTES = {
   },
   LOGIN: '/login/',
 };
+
+export const SendNotificationMethodName = 'SendNotification';
+export const NotificationHubRoute = '/notificationHub';
