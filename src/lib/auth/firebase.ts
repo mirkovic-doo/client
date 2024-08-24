@@ -1,9 +1,11 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
+import { getStorage } from 'firebase/storage';
 
 import { env } from '../../env';
 
 const app = initializeApp(env.firebase);
+export const storage = getStorage(app);
 
 export const auth = getAuth(app);
 
