@@ -12,9 +12,10 @@
   import { Radio } from 'flowbite-svelte';
 
   import { goto } from '$app/navigation';
+  import { mapUserResponseToUser } from '$lib/mappers/user';
   import { loadingStore } from '$lib/stores/loadingStore';
   import userStore from '$lib/stores/userStore';
-  import { ROUTES } from '$lib/utils/constants';
+  import toast from 'svelte-french-toast';
 
   let form: SignUpForm = {
     email: '',
@@ -45,9 +46,12 @@
     try {
       const result = signUpFormSchema.safeParse(form);
       validationErrors = result.success ? null : formatValidationErrors(result);
-      console.log(validationErrors);
       if (validationErrors === null) {
-        signUp(form.email, form.password);
+        toast.promise(signUp(form.email, form.password), {
+          loading: 'Signing up...',
+          success: 'Successfully signed up',
+          error: (e) => e.message,
+        });
       }
     } finally {
       isSubmitting = false;
@@ -70,9 +74,7 @@
         houseNumber: form.houseNumber,
       });
 
-      $userStore = response.data;
-      await auth.currentUser?.getIdToken(true);
-      await goto(ROUTES.GUEST.DASHBOARD);
+      $userStore = mapUserResponseToUser(response.data);
     } else {
       const response = await api.userService.auth.signupHost({
         email: form.email,
@@ -85,12 +87,11 @@
         houseNumber: form.houseNumber,
       });
 
-      $userStore = response.data;
-      await auth.currentUser?.getIdToken(true);
-      await goto(ROUTES.HOST.DASHBOARD);
+      $userStore = mapUserResponseToUser(response.data);
     }
-
+    await auth.currentUser?.getIdToken(true);
     loadingStore.set(false);
+    await goto('/');
   };
 
   const handleInputValidation = () => {
@@ -115,7 +116,7 @@
         <span class="text-light-black">Guest</span>
       </Radio>
       <Radio name="example1" value="2" bind:group={selectedUserType} color="purple">
-        <span class="text-light-black">Host</span>
+        <span class="text-light-gray">Host</span>
       </Radio>
     </div>
     <div class="grid gap-4 grid-cols-2">
@@ -141,7 +142,7 @@
       type="submit"
       aria-disabled={validationErrors !== null || isSubmitting}
       disabled={validationErrors !== null || isSubmitting}
-      class="mt-2 w-full bg-light-black"
+      class="mt-2 w-full bg-light-gray"
       on:click={submit}
     />
     <div class="mt-2 flex justify-center">
