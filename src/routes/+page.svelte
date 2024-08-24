@@ -10,7 +10,7 @@
   onMount(async () => {
     if ($authStore.isLoggedIn) {
       if ($userStore === null || $userStore === undefined) {
-        const response = await api.userService.getMe();
+        const response = await api.userService.user.getMe();
         $userStore = response.data;
       }
 

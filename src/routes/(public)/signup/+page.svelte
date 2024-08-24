@@ -59,7 +59,7 @@
     await createUserWithEmailAndPassword(auth, email, password);
 
     if (selectedUserType === '1') {
-      const response = await api.userService.guest.signupGuest({
+      const response = await api.userService.auth.signupGuest({
         email: form.email,
         firstName: form.firstName,
         lastName: form.lastName,
@@ -74,7 +74,7 @@
       await auth.currentUser?.getIdToken(true);
       await goto(ROUTES.GUEST.DASHBOARD);
     } else {
-      const response = await api.userService.host.signupHost({
+      const response = await api.userService.auth.signupHost({
         email: form.email,
         firstName: form.firstName,
         lastName: form.lastName,
@@ -103,7 +103,7 @@
   <title>Signup</title>
 </svelte:head>
 
-<div class="flex justify-center h-full items-center justify-evenly">
+<div class="flex h-full items-center justify-evenly">
   <div class="text-md mb-6 flex-col">
     <h2 class="mb-2 text-[32px] font-bold">Sign Up</h2>
     <span> Welcome to Buk It Easy</span>

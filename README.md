@@ -30,5 +30,6 @@ You can preview the production build with `npm run preview`.
 1. User
 
 ```bash
-    npx swagger-typescript-api@13.0.2 -p https://localhost:5033/swagger/v1/swagger.json -o ./src/lib/api -n apiUser.ts --module-name-index 3 -t src/swagger-templates/
+    npx swagger-typescript-api@12.0.4 -p https://localhost:7008/swagger/v1/swagger.json -o ./src/lib/api -n apiUser.ts --module-name-index 1 -t src/swagger-templates/
+    npx swagger-typescript-api@12.0.4 -p https://localhost:7238/swagger/v1/swagger.json -o ./src/lib/api -n apiNotification.ts --module-name-index 1 -t src/swagger-templates/
 ```
