@@ -17,3 +17,10 @@ export interface SignUpForm {
   confirmPassword: string;
   [key: string]: string;
 }
+
+export interface ChangePasswordForm {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+  [key: string]: string;
+}

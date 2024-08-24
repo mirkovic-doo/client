@@ -2,10 +2,10 @@ export const PREFERRED_DARK_MEDIA_THEME = '(prefers-color-scheme: dark)';
 
 export const ROUTES = {
   GUEST: {
-    DASHBOARD: '/guest/dashboard/',
+    HOME: '/guest/',
   },
   HOST: {
-    DASHBOARD: '/host/dashboard/',
+    HOME: '/host/',
   },
   LOGIN: '/login/',
 };
