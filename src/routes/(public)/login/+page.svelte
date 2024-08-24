@@ -1,7 +1,6 @@
 <script lang="ts">
   import { signInWithEmailAndPassword } from 'firebase/auth';
 
-  import { goto } from '$app/navigation';
   import { auth } from '$lib/auth/firebase';
   import Input from '$lib/components/common/Input.svelte';
   import { formatValidationErrors, ValidateSingleFormField } from '$lib/validations/common';
@@ -10,6 +9,7 @@
   import type { LoginForm } from '$lib/types/auth';
   import { loginFormConfig } from '$lib/utils/formConfigs';
   import { logInFormSchema } from '$lib/validations/auth';
+  import toast from 'svelte-french-toast';
 
   let form: LoginForm = {
     email: '',
@@ -33,7 +33,11 @@
       const result = logInFormSchema.safeParse(form);
       validationErrors = result.success ? null : formatValidationErrors(result);
       if (validationErrors === null) {
-        login(form.email, form.password);
+        toast.promise(login(form.email, form.password), {
+          loading: 'Logging in...',
+          success: 'Successfully logged in',
+          error: (e) => e.message,
+        });
       }
     } finally {
       isSubmitting = false;
@@ -42,7 +46,6 @@
 
   async function login(email: string, password: string) {
     await signInWithEmailAndPassword(auth, email, password);
-    await goto('/');
   }
 
   const handleInputValidation = () => {
@@ -83,7 +86,7 @@
       type="submit"
       aria-disabled={validationErrors !== null || isSubmitting}
       disabled={validationErrors !== null || isSubmitting}
-      class="w-full bg-light-black mt-2"
+      class="w-full bg-light-gray mt-2"
       on:click={submit}
     />
 

@@ -1,7 +1,7 @@
-import type { UserResponse } from '$lib/api/apiUser';
+import type { User } from '$lib/types/user';
 import { writable } from 'svelte/store';
 
-const userStore = writable<UserResponse | null>();
+const userStore = writable<User | null>();
 
 export default {
   subscribe: userStore.subscribe,
