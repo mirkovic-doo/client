@@ -1,6 +1,7 @@
 <script>
   import { goto } from '$app/navigation';
   import { auth } from '$lib/auth/firebase';
+  import Notifications from '$lib/components/notifications/Notifications.svelte';
   import userStore from '$lib/stores/userStore';
   import { signOut } from 'firebase/auth';
   import {
@@ -11,7 +12,6 @@
     DropdownItem,
     Navbar,
     NavBrand,
-    NavHamburger,
     NavLi,
     NavUl,
   } from 'flowbite-svelte';
@@ -30,11 +30,11 @@
   <NavBrand href="/">
     <span class="self-center whitespace-nowrap text-xl font-semibold text-white">Buk It Easy</span>
   </NavBrand>
-  <div class="flex items-center md:order-2">
+  <div class="flex items-center md:order-2 gap-4">
+    <Notifications />
     <Avatar id="avatar-menu" class="cursor-pointer !bg-grayscale-800"
       >{$userStore?.firstName[0]}{$userStore?.lastName[0]}</Avatar
     >
-    <NavHamburger class1="w-full md:flex md:w-auto md:order-1" />
   </div>
   <Dropdown
     placement="bottom-start"

@@ -50,7 +50,7 @@
   const updateProfile = async () => {
     loadingStore.set(true);
 
-    const response = await api.userService.updateUser({
+    const response = await api.userService.user.updateUser({
       email: updateUserForm.email,
       firstName: updateUserForm.firstName,
       lastName: updateUserForm.lastName,
