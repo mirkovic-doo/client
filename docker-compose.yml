@@ -1,0 +1,12 @@
+services:
+  client:
+    image: node:21-alpine
+    build:
+      context: .
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=development
+    env_file:
+      - .env
+    ports:
+      - '3009:3009'
