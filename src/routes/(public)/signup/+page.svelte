@@ -103,7 +103,7 @@
   <title>Signup</title>
 </svelte:head>
 
-<div class="flex justify-center h-full items-center justify-evenly">
+<div class="flex h-full items-center justify-evenly">
   <div class="text-md mb-6 flex-col">
     <h2 class="mb-2 text-[32px] font-bold">Sign Up</h2>
     <span> Welcome to Buk It Easy</span>

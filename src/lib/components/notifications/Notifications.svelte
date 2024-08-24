@@ -6,7 +6,7 @@
   import { createFileUploadHubConnection } from '$lib/utils/hub';
   import { mapNotificationResponseToNotification } from '$lib/utils/notification';
   import { Indicator, Spinner } from 'flowbite-svelte';
-  import { onMount } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
   import { BellRegular } from 'svelte-awesome-icons';
 
   let notificationsDialogOpen = false;
@@ -15,10 +15,13 @@
   let singleNotificationDialogOpen = false;
   let newNotification: BIENotification | null = null;
   let notifications: BIENotification[] = [];
+  let notificationsDialog: Element | null = null;
 
   $: unreadNotifications = notifications.filter((notification) => !notification.isRead);
 
   onMount(() => {
+    window.addEventListener('click', handleWindowClick);
+
     getNotifications();
 
     const connection = createFileUploadHubConnection();
@@ -27,6 +30,16 @@
       await handleNewNotification(data);
     });
   });
+
+  onDestroy(() => {
+    window.removeEventListener('click', handleWindowClick);
+  });
+
+  const handleWindowClick = (e: MouseEvent) => {
+    if (notificationsDialog && !notificationsDialog.contains(e.target as Node) && notificationsDialogOpen) {
+      notificationsDialogOpen = false;
+    }
+  };
 
   const getNotifications = async () => {
     loading = true;
@@ -91,7 +104,7 @@
   };
 </script>
 
-<div class="relative">
+<div class="relative" bind:this={notificationsDialog}>
   <button
     class="h-[35px] w-[40px] bg-orange-600 font-medium underline px-2 py-1 rounded-md text-white {unreadNotifications.length >
     0
