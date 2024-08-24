@@ -9,29 +9,39 @@
  * ---------------------------------------------------------------
  */
 
-export interface UserRequest {
-  email: string | null;
-  firstName: string | null;
-  lastName: string | null;
-  country: string | null;
-  city: string | null;
-  postCode: string | null;
-  street: string | null;
-  houseNumber: string | null;
+export interface NotificationRequest {
+  /** @format uuid */
+  senderId?: string;
+  /** @format uuid */
+  receiverId?: string;
+  /** @format uuid */
+  entityId?: string;
+  type?: NotificationType;
+  isRead?: boolean;
 }
 
-export interface UserResponse {
+export interface NotificationResponse {
   /** @format uuid */
   id?: string;
-  firstName?: string | null;
-  lastName?: string | null;
-  email?: string | null;
-  country?: string | null;
-  city?: string | null;
-  postCode?: string | null;
-  street?: string | null;
-  houseNumber?: string | null;
-  isGuest?: boolean;
+  /** @format uuid */
+  senderId?: string;
+  /** @format uuid */
+  receiverId?: string;
+  /** @format uuid */
+  entityId?: string;
+  type?: NotificationType;
+  isRead?: boolean;
+  /** @format date-time */
+  createdAt?: string;
+  /** @format date-time */
+  updatedAt?: string;
+}
+
+export enum NotificationType {
+  ReservationRequest = 'ReservationRequest',
+  ReservationResponse = 'ReservationResponse',
+  ReservationCancellation = 'ReservationCancellation',
+  ReviewRecieved = 'ReviewRecieved',
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -245,86 +255,21 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title UserService
+ * @title NotificationService
  * @version 1.0
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
-  auth = {
+  notification = {
     /**
      * No description
      *
-     * @tags Auth
-     * @name SignupGuest
-     * @request POST:/api/auth/signup/guest
-     */
-    signupGuest: (data: UserRequest, params: RequestParams = {}) =>
-      this.request<UserResponse, string>({
-        path: `/api/auth/signup/guest`,
-        method: 'POST',
-        body: data,
-        type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Auth
-     * @name SignupHost
-     * @request POST:/api/auth/signup/host
-     */
-    signupHost: (data: UserRequest, params: RequestParams = {}) =>
-      this.request<UserResponse, string>({
-        path: `/api/auth/signup/host`,
-        method: 'POST',
-        body: data,
-        type: ContentType.Json,
-        format: 'json',
-        ...params,
-      }),
-  };
-  health = {
-    /**
-     * No description
-     *
-     * @tags Health
-     * @name GetHealth
-     * @request GET:/api/health
-     */
-    getHealth: (params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/api/health`,
-        method: 'GET',
-        ...params,
-      }),
-  };
-  user = {
-    /**
-     * No description
-     *
-     * @tags User
-     * @name GetMe
-     * @request GET:/api/user/me
-     */
-    getMe: (params: RequestParams = {}) =>
-      this.request<UserResponse, string>({
-        path: `/api/user/me`,
-        method: 'GET',
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags User
+     * @tags Notification
      * @name GetById
-     * @request GET:/api/user/{id}
+     * @request GET:/api/notification/{id}
      */
     getById: (id: string, params: RequestParams = {}) =>
-      this.request<UserResponse, string>({
-        path: `/api/user/${id}`,
+      this.request<NotificationResponse, string>({
+        path: `/api/notification/${id}`,
         method: 'GET',
         format: 'json',
         ...params,
@@ -333,14 +278,58 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags User
-     * @name UpdateUser
-     * @request PUT:/api/user
+     * @tags Notification
+     * @name DeleteNotification
+     * @request DELETE:/api/notification/{id}
      */
-    updateUser: (data: UserRequest, params: RequestParams = {}) =>
-      this.request<UserResponse, string>({
-        path: `/api/user`,
-        method: 'PUT',
+    deleteNotification: (id: string, params: RequestParams = {}) =>
+      this.request<void, string>({
+        path: `/api/notification/${id}`,
+        method: 'DELETE',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Notification
+     * @name GetMyUnreadNotifications
+     * @request GET:/api/notification/unread
+     */
+    getMyUnreadNotifications: (params: RequestParams = {}) =>
+      this.request<NotificationResponse[], string>({
+        path: `/api/notification/unread`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Notification
+     * @name GetMyNotifications
+     * @request GET:/api/notification/my
+     */
+    getMyNotifications: (params: RequestParams = {}) =>
+      this.request<NotificationResponse[], string>({
+        path: `/api/notification/my`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Notification
+     * @name CreateNotification
+     * @request POST:/api/notification
+     */
+    createNotification: (data: NotificationRequest, params: RequestParams = {}) =>
+      this.request<NotificationResponse, string>({
+        path: `/api/notification`,
+        method: 'POST',
         body: data,
         type: ContentType.Json,
         format: 'json',
@@ -350,14 +339,29 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags User
-     * @name DeleteUser
-     * @request DELETE:/api/user
+     * @tags Notification
+     * @name MarkNotificationAsRead
+     * @request PUT:/api/notification/mark/as/read/{id}
      */
-    deleteUser: (params: RequestParams = {}) =>
+    markNotificationAsRead: (id: string, params: RequestParams = {}) =>
+      this.request<NotificationResponse, string>({
+        path: `/api/notification/mark/as/read/${id}`,
+        method: 'PUT',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Notification
+     * @name MarkAllAsRead
+     * @request PUT:/api/notification/mark/all/as/read
+     */
+    markAllAsRead: (params: RequestParams = {}) =>
       this.request<void, string>({
-        path: `/api/user`,
-        method: 'DELETE',
+        path: `/api/notification/mark/all/as/read`,
+        method: 'PUT',
         ...params,
       }),
   };
