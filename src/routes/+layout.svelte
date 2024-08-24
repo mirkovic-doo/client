@@ -3,7 +3,6 @@
   import { page } from '$app/stores';
   import NetIcon from '$lib/assets/icons/net-icon.svg';
   import { auth } from '$lib/auth/firebase';
-  import Button from '$lib/components/common/Button.svelte';
   import authStore from '$lib/stores/authStore';
   import { loadingStore } from '$lib/stores/loadingStore';
   import userStore from '$lib/stores/userStore';
@@ -50,15 +49,6 @@
 
     setTheme();
   });
-
-  const handleLogOut = async () => {
-    try {
-      $userStore = null;
-      await signOut(auth);
-    } catch (e) {
-      console.log(e);
-    }
-  };
 </script>
 
 {#if authInitialized}
@@ -74,13 +64,6 @@
       </div>
     {:else}
       <div class="relative h-screen">
-        <Button
-          text="Log Out"
-          type="submit"
-          color="red"
-          class={`w-fit bg-white !text-black mt-2 ${$authStore.isLoggedIn ? '' : 'hidden'}`}
-          on:click={handleLogOut}
-        />
         <slot />
       </div>
     {/if}
