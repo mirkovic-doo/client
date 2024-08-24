@@ -1,6 +1,6 @@
 {
   "name": "buk.it.easy",
-  "version": "0.0.1",
+  "version": "v0.0.1",
   "scripts": {
     "dev": "npm run check && vite dev --port 3009",
     "build": "npm run check && vite build",
