@@ -104,10 +104,9 @@
   };
 </script>
 
-<div class="relative" bind:this={notificationsDialog}>
+<div class="relative flex items-end h-fit" bind:this={notificationsDialog}>
   <button
-    class="h-[35px] w-[40px] bg-orange-600 font-medium underline px-2 py-1 rounded-md text-white {unreadNotifications.length >
-    0
+    class="h-10 w-10 bg-grayscale-800 font-medium underline rounded-full text-white {unreadNotifications.length > 0
       ? 'animate-pulse'
       : ''}"
     on:click={toggleNotifications}
@@ -121,7 +120,7 @@
   </button>
 
   {#if notificationsDialogOpen}
-    <dialog open={true} class="top-10 left-[-14vw] w-[20vw] rounded-md">
+    <dialog open={true} class="top-14 left-[-14vw] w-[20vw] rounded-xl z-[9999] bg-grayscale-800 text-white">
       <div class="flex flex-col gap-y-2 p-2 min-h-[25vh]">
         <h1 class="text-lg font-bold">Notifications</h1>
         {#if loading}
@@ -165,7 +164,7 @@
   {/if}
 
   {#if singleNotificationDialogOpen && newNotification}
-    <dialog open={true} class="top-10 left-[-14vw] w-[20vw] rounded-md">
+    <dialog open={true} class="top-14 left-[-14vw] w-[20vw] rounded-md bg-grayscale-800 text-white">
       <button class="flex flex-col gap-y-2 p-2" on:click={closeNewNotificationDialog}>
         <h1 class="text-lg font-bold">New Notification</h1>
         <p class="text-sm">{getNotificationText(newNotification)}</p>
