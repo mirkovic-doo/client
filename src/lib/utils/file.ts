@@ -21,3 +21,13 @@ export const getFileStorageUrl = async (fileName: string, folder: string = 'imag
   const fileRef = ref(storage, `${folder}/${fileName}`);
   return await getDownloadURL(fileRef);
 };
+
+export const getImageUrlsFromNames = async (imageNames: string[]) => {
+  let imagesDownloadUrls: string[] = [];
+  for (let i = 0; i < imageNames.length; i++) {
+    const imageName = imageNames[i];
+    const downloadUrl = await getFileStorageUrl(imageName);
+    imagesDownloadUrls.push(downloadUrl);
+  }
+  return imagesDownloadUrls;
+};
