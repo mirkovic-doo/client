@@ -1,6 +1,11 @@
 /* eslint-disable no-extra-parens */
 
 import {
+  Api as AccommodationServiceApi,
+  type ApiConfig as AccommodationServiceConfig,
+  type RequestParams as AccommodationServiceRequestParams,
+} from '$lib/api/apiAccommodation';
+import {
   Api as NotificationServiceApi,
   type ApiConfig as NotificationServiceConfig,
   type RequestParams as NotificationServiceRequestParams,
@@ -55,9 +60,30 @@ const apiNotificationServiceConfig: NotificationServiceConfig = {
   },
 };
 
+const apiAccommodationServiceConfig: AccommodationServiceConfig = {
+  baseUrl: env.accommodationServiceBaseUrl,
+  baseApiParams: {
+    secure: true,
+  },
+  securityWorker: async (): Promise<AccommodationServiceRequestParams> => {
+    const { isLoggedIn, user } = get(authStore);
+    const requestParams: AccommodationServiceRequestParams = {};
+
+    if (isLoggedIn && user) {
+      requestParams.headers = {
+        ...requestParams.headers,
+        Authorization: `Bearer ${await user.getIdToken()}`,
+      };
+    }
+
+    return requestParams;
+  },
+};
+
 const api = {
   userService: new UserServiceApi(apiUserServiceConfig),
   notificationService: new NotificationServiceApi(apiNotificationServiceConfig),
+  accommodationService: new AccommodationServiceApi(apiAccommodationServiceConfig),
 };
 
 export default api;
