@@ -1094,6 +1094,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Property
+     * @name GetMyProperties
+     * @request GET:/api/property/my
+     */
+    getMyProperties: (params: RequestParams = {}) =>
+      this.request<PropertyResponse[], string>({
+        path: `/api/property/my`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Property
      * @name SearchProperties
      * @request GET:/api/property/search
      */
@@ -1102,7 +1117,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         location?: string;
         /** @format int32 */
         guests?: number;
+        /** @format date */
         startDate?: string;
+        /** @format date */
         endDate?: string;
       },
       params: RequestParams = {}

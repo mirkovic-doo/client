@@ -4,6 +4,7 @@
   import { createEventDispatcher } from 'svelte';
 
   export let multiple = false;
+  export let autoUpload = false;
   const dispatch = createEventDispatcher();
 
   let files: FileList | null = null;
@@ -37,11 +38,14 @@
     const target = event.target as HTMLInputElement;
     if (target.files !== null) {
       files = target.files;
+      if (autoUpload) {
+        handleUpload();
+      }
     }
   };
 </script>
 
-<div class="flex flex-col gap-y-4 p-4 items-start w-[250px] {$$restProps.class}">
+<div class="flex gap-y-4 p-4 items-start w-[250px] {$$restProps.class}">
   <input
     type="file"
     id="photo-input"
@@ -51,14 +55,16 @@
     {multiple}
   />
 
-  <div class="flex items-center gap-x-4 w-full">
-    <button
-      class="px-8 w-[110px] py-2 bg-orange-400 text-white rounded-sm disabled:bg-orange-900"
-      on:click={handleUpload}
-      disabled={saving}>Save</button
-    >
-    {#if saving}
-      <Spinner color="white" size="8" />
-    {/if}
-  </div>
+  {#if !autoUpload}
+    <div class="flex items-center gap-x-4 w-full">
+      <button
+        class="px-8 w-[110px] py-2 bg-orange-400 text-white rounded-sm disabled:bg-orange-900"
+        on:click={handleUpload}
+        disabled={saving}>Save</button
+      >
+      {#if saving}
+        <Spinner color="white" size="8" />
+      {/if}
+    </div>
+  {/if}
 </div>
