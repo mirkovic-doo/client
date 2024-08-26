@@ -41,19 +41,6 @@ export const mapPropertyResponseToProperty = async (response: PropertyResponse):
   };
 };
 
-export const mapPropertyFormToPropertyRequest = (form: PropertyForm): PropertyRequest => {
-  return {
-    amenities: form.amenities.split(',').map((amenity) => amenity.trim()),
-    location: form.location,
-    maxGuests: parseInt(form.maxGuests, 10),
-    minGuests: parseInt(form.minGuests, 10),
-    name: form.name,
-    photos: form.photos,
-    pricingOption: form.pricingOption,
-    autoConfirmReservation: form.autoConfirmReservation,
-  };
-};
-
 export const mapPropertyResponseToPropertyForm = (response: PropertyResponse): PropertyForm => {
   return {
     amenities: response.amenities ? response.amenities.join(', ') : '',
@@ -67,20 +54,6 @@ export const mapPropertyResponseToPropertyForm = (response: PropertyResponse): P
   };
 };
 
-export const mapPropertyResponseToProperty = async (response: PropertyResponse): Promise<Property> => {
-  const imagesUrls = await getImageUrlsFromNames(response.photos || []);
-  return {
-    id: response.id || '',
-    name: response.name || null,
-    location: response.location || '',
-    amenities: response.amenities || [],
-    photos: imagesUrls,
-    minGuests: response.minGuests ?? 0,
-    maxGuests: response.maxGuests ?? 0,
-    pricingOption: response.pricingOption || PricingOption.PerUnit,
-  };
-};
-
 export const mapPropertyFormToPropertyRequest = (form: PropertyForm): PropertyRequest => {
   return {
     amenities: form.amenities.split(',').map((amenity) => amenity.trim()),
@@ -90,17 +63,6 @@ export const mapPropertyFormToPropertyRequest = (form: PropertyForm): PropertyRe
     name: form.name,
     photos: form.photos,
     pricingOption: form.pricingOption,
-  };
-};
-
-export const mapPropertyResponseToPropertyForm = (response: PropertyResponse): PropertyForm => {
-  return {
-    amenities: response.amenities ? response.amenities.join(', ') : '',
-    location: response.location ?? '',
-    maxGuests: response.maxGuests ? response.maxGuests.toString() : '20',
-    minGuests: response.minGuests ? response.minGuests.toString() : '1',
-    name: response.name || '',
-    photos: response.photos || [],
-    pricingOption: response.pricingOption || PricingOption.PerUnit,
+    autoConfirmReservation: form.autoConfirmReservation,
   };
 };
