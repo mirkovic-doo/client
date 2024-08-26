@@ -34,6 +34,7 @@
     noResultsMessage="You do not have any properties added"
     showPrice={false}
     editable={true}
+    on:changeAvailabilityPeriod={(e) => goto(`/host/availabilityPeriods?propertyId=${e.detail.id}`)}
     on:editProperty={(e) => goto(`/host/property?id=${e.detail.id}`)}
   />
 
