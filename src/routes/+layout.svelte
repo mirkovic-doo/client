@@ -47,8 +47,11 @@
         };
 
         const redirectUrl = $page.url.pathname;
-
-        if (!redirectUrl.startsWith('/login') && !redirectUrl.startsWith('/signup')) {
+        if (
+          !redirectUrl.startsWith('/login') &&
+          !redirectUrl.startsWith('/signup') &&
+          !redirectUrl.startsWith('/properties')
+        ) {
           await goto(`/login?redirectUrl=${encodeURIComponent(redirectUrl)}`);
         }
       }
@@ -79,7 +82,7 @@
         <Spinner color="white" size="12" />
       </div>
     {:else}
-      <div class="relative h-screen">
+      <div class="relative h-full overflow-y-auto">
         {#if $userStore}
           <Navbar />
         {/if}

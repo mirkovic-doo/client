@@ -21,7 +21,7 @@
   };
 </script>
 
-<div class="flex items-center bg-grayscale-800 p-2 rounded-full shadow m-4">
+<div class="flex items-center bg-grayscale-800 py-2 px-4 rounded-2xl shadow w-[80%] mx-auto">
   <div class="flex flex-grow items-center justify-between px-4">
     <div class="flex flex-col">
       <label for="location" class="text-sm font-semibold">Where</label>
