@@ -1,11 +1,9 @@
 <script lang="ts">
-  import { PricingOption } from '$lib/api/apiAccommodation';
   import api from '$lib/auth/http';
+  import PropertiesDisplay from '$lib/components/property/PropertiesDisplay.svelte';
   import SearchBar from '$lib/components/search/SearchBar.svelte';
   import { mapPropertyResponseToSearchProperty } from '$lib/mappers/property';
   import type { SearchProperty } from '$lib/types/property';
-  import { Card } from 'flowbite-svelte';
-  import { MagnifyingGlassSolid, PeopleGroupSolid, SackDollarSolid } from 'svelte-awesome-icons';
 
   let properties: SearchProperty[] = [];
 
@@ -40,36 +38,8 @@
   <title>Properties</title>
 </svelte:head>
 
-<SearchBar on:searchProperties={handleSearchProperties} />
+<div class="h-full w-full p-4">
+  <SearchBar on:searchProperties={handleSearchProperties} />
 
-<div class="grid gap-4 p-10 sm:grid-cols-2 md:grid-cols-4">
-  {#if properties.length === 0}
-    <div class="col-span-full text-xl text-gray-500 flex gap-4 justify-center items-center">
-      <MagnifyingGlassSolid />No results
-    </div>
-  {:else}
-    {#each properties as property}
-      <Card img={property.photos[0]} class="dark:bg-grayscale-800">
-        <h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-          {property.name}
-        </h5>
-
-        <div class="flex justify-between mt-4">
-          <div class="flex gap-2"><PeopleGroupSolid />{property.minGuests}-{property.maxGuests}</div>
-
-          <div class="flex flex-col">
-            <div class="flex">
-              <SackDollarSolid size="20" />/night{property.pricingOption === PricingOption.PerGuest
-                ? ' per guest'
-                : ''}: ${property.unitPrice}
-            </div>
-          </div>
-        </div>
-        <div class="flex justify-between mt-1">
-          <a href={`/properties/${property.id}`} class="text-purple-200 hover:underline">View Details </a>
-          <div class="flex gap-2"><SackDollarSolid size="20" /> Total for stay: ${property.totalPrice}</div>
-        </div>
-      </Card>
-    {/each}
-  {/if}
+  <PropertiesDisplay {properties} />
 </div>

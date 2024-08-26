@@ -10,6 +10,6 @@
   });
 </script>
 
-<div class="flex flex-col relative w-full h-full">
+<div class="flex flex-col relative w-full h-[90%]">
   <slot />
 </div>

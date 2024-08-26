@@ -26,7 +26,7 @@
   };
 </script>
 
-<Navbar class="!bg-light-gray border-b dark:border-grayscale-800">
+<Navbar class="!bg-light-gray border-b dark:border-grayscale-800 sticky top-0 z-[99]">
   <NavBrand href="/">
     <span class="self-center whitespace-nowrap text-xl font-semibold text-white">Buk It Easy</span>
   </NavBrand>
