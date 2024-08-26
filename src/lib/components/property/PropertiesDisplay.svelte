@@ -62,10 +62,18 @@
               </div>
             </div>
           {:else}
-            <div class="flex items-center">
-              <div>Pricing option:</div>
-              <div class="ml-2">
-                {property.pricingOption === PricingOption.PerGuest ? 'Per guest' : 'Per unit'}
+            <div class="flex flex-col gap-y-2 items-end">
+              <div class="flex items-center">
+                <div>Pricing option:</div>
+                <div class="ml-2">
+                  {property.pricingOption === PricingOption.PerGuest ? 'Per guest' : 'Per unit'}
+                </div>
+              </div>
+              <div class="flex items-center">
+                <div>Reservation confirmation:</div>
+                <div class="ml-2">
+                  {property.autoConfirmReservation ? 'Auto' : 'Manual'}
+                </div>
               </div>
             </div>
           {/if}

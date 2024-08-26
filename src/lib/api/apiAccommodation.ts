@@ -475,6 +475,7 @@ export interface PropertyRequest {
   /** @format int32 */
   maxGuests: number;
   pricingOption: PricingOption;
+  autoConfirmReservation: boolean;
 }
 
 export interface PropertyResponse {
@@ -489,6 +490,41 @@ export interface PropertyResponse {
   /** @format int32 */
   maxGuests?: number;
   pricingOption?: PricingOption;
+  autoConfirmReservation?: boolean;
+}
+
+export interface ReservationRequest {
+  /** @format date */
+  startDate: string;
+  /** @format date */
+  endDate: string;
+  /** @format int32 */
+  guests: number;
+  /** @format uuid */
+  propertyId: string;
+}
+
+export interface ReservationResponse {
+  /** @format uuid */
+  id?: string;
+  /** @format date */
+  startDate?: string;
+  /** @format date */
+  endDate?: string;
+  /** @format int32 */
+  guests?: number;
+  status?: ReservationStatus;
+  /** @format double */
+  price?: number;
+  /** @format uuid */
+  propertyId?: string;
+}
+
+export enum ReservationStatus {
+  Pending = 'Pending',
+  Confirmed = 'Confirmed',
+  GuestCancelled = 'GuestCancelled',
+  HostCancelled = 'HostCancelled',
 }
 
 export interface RuntimeFieldHandle {
@@ -515,6 +551,7 @@ export interface SearchPropertyResponse {
   /** @format int32 */
   maxGuests?: number;
   pricingOption?: PricingOption;
+  autoConfirmReservation?: boolean;
   /** @format double */
   totalPrice?: number;
   /** @format double */
@@ -980,10 +1017,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags AvailabilityPeriod
-     * @name GetAllByPropertyId
+     * @name GetAvailabilityPeriodsByPropertyId
      * @request GET:/api/availabilityperiod/property/{propertyId}
      */
-    getAllByPropertyId: (propertyId: string, params: RequestParams = {}) =>
+    getAvailabilityPeriodsByPropertyId: (propertyId: string, params: RequestParams = {}) =>
       this.request<AvailabilityPeriodResponse[], string>({
         path: `/api/availabilityperiod/property/${propertyId}`,
         method: 'GET',
@@ -1128,6 +1165,144 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/property/search`,
         method: 'GET',
         query: query,
+        format: 'json',
+        ...params,
+      }),
+  };
+  reservation = {
+    /**
+     * No description
+     *
+     * @tags Reservation
+     * @name GetReservation
+     * @request GET:/api/reservation/{id}
+     */
+    getReservation: (id: string, params: RequestParams = {}) =>
+      this.request<ReservationResponse, string>({
+        path: `/api/reservation/${id}`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Reservation
+     * @name DeleteReservation
+     * @request DELETE:/api/reservation/{id}
+     */
+    deleteReservation: (id: string, params: RequestParams = {}) =>
+      this.request<OkObjectResult, string>({
+        path: `/api/reservation/${id}`,
+        method: 'DELETE',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Reservation
+     * @name CreateReservation
+     * @request POST:/api/reservation
+     */
+    createReservation: (data: ReservationRequest, params: RequestParams = {}) =>
+      this.request<ReservationResponse, string>({
+        path: `/api/reservation`,
+        method: 'POST',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Reservation
+     * @name GetReservationsByPropertyId
+     * @request GET:/api/reservation/property/{propertyId}
+     */
+    getReservationsByPropertyId: (propertyId: string, params: RequestParams = {}) =>
+      this.request<ReservationResponse[], string>({
+        path: `/api/reservation/property/${propertyId}`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Reservation
+     * @name ConfirmReservation
+     * @request GET:/api/reservation/confirm/{id}
+     */
+    confirmReservation: (id: string, params: RequestParams = {}) =>
+      this.request<OkObjectResult, string>({
+        path: `/api/reservation/confirm/${id}`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Reservation
+     * @name CancelReservationGuest
+     * @request DELETE:/api/reservation/{id}/cancel/guest
+     */
+    cancelReservationGuest: (id: string, params: RequestParams = {}) =>
+      this.request<OkObjectResult, string>({
+        path: `/api/reservation/${id}/cancel/guest`,
+        method: 'DELETE',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Reservation
+     * @name CancelReservationHost
+     * @request DELETE:/api/reservation/{id}/cancel/host
+     */
+    cancelReservationHost: (id: string, params: RequestParams = {}) =>
+      this.request<OkObjectResult, string>({
+        path: `/api/reservation/${id}/cancel/host`,
+        method: 'DELETE',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Reservation
+     * @name GetNumberOfCancelledReservations
+     * @request GET:/api/reservation/cancellednum/guest/{guestId}
+     */
+    getNumberOfCancelledReservations: (guestId: string, params: RequestParams = {}) =>
+      this.request<OkObjectResult, string>({
+        path: `/api/reservation/cancellednum/guest/${guestId}`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Reservation
+     * @name GetGuestReservations
+     * @request GET:/api/reservation/guest/{guestId}
+     */
+    getGuestReservations: (guestId: string, params: RequestParams = {}) =>
+      this.request<ReservationResponse[], string>({
+        path: `/api/reservation/guest/${guestId}`,
+        method: 'GET',
         format: 'json',
         ...params,
       }),

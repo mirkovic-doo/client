@@ -22,6 +22,7 @@ export const mapPropertyResponseToSearchProperty = async (
     pricingOption: property.pricingOption || PricingOption.PerUnit,
     totalPrice: property.totalPrice || 0,
     unitPrice: property.unitPrice || 0,
+    autoConfirmReservation: property.autoConfirmReservation ?? true,
   };
 };
 
@@ -36,6 +37,7 @@ export const mapPropertyResponseToProperty = async (response: PropertyResponse):
     minGuests: response.minGuests ?? 0,
     maxGuests: response.maxGuests ?? 0,
     pricingOption: response.pricingOption || PricingOption.PerUnit,
+    autoConfirmReservation: response.autoConfirmReservation ?? true,
   };
 };
 
@@ -48,6 +50,7 @@ export const mapPropertyFormToPropertyRequest = (form: PropertyForm): PropertyRe
     name: form.name,
     photos: form.photos,
     pricingOption: form.pricingOption,
+    autoConfirmReservation: form.autoConfirmReservation,
   };
 };
 
@@ -60,5 +63,6 @@ export const mapPropertyResponseToPropertyForm = (response: PropertyResponse): P
     name: response.name || '',
     photos: response.photos || [],
     pricingOption: response.pricingOption || PricingOption.PerUnit,
+    autoConfirmReservation: response.autoConfirmReservation ?? true,
   };
 };

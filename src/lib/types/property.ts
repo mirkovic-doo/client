@@ -14,6 +14,7 @@ export interface Property {
   minGuests: number;
   maxGuests: number;
   pricingOption: PricingOption;
+  autoConfirmReservation: boolean;
 }
 
 export interface PropertyForm {
@@ -24,5 +25,6 @@ export interface PropertyForm {
   minGuests: string;
   maxGuests: string;
   pricingOption: PricingOption;
-  [key: string]: string | number | string[] | PricingOption;
+  autoConfirmReservation: boolean;
+  [key: string]: string | number | string[] | PricingOption | boolean;
 }

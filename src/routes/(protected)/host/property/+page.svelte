@@ -11,7 +11,7 @@
   import { propertyFormConfig } from '$lib/utils/formConfigs';
   import { formatValidationErrors, ValidateSingleFormField } from '$lib/validations/common';
   import { propertyFormSchema } from '$lib/validations/property';
-  import { Radio } from 'flowbite-svelte';
+  import { Checkbox, Radio } from 'flowbite-svelte';
   import { onMount } from 'svelte';
   import toast from 'svelte-french-toast';
 
@@ -25,6 +25,7 @@
     pricingOption: PricingOption.PerGuest,
     minGuests: '1',
     maxGuests: '20',
+    autoConfirmReservation: true,
   };
 
   let isSubmitting = false;
@@ -126,21 +127,28 @@
           iconType={propertyConfig.icon}
         />
       {/each}
-      <div class="flex flex-col gap-1 my-auto w-full">
-        <div class="text-black">Pricing option:</div>
-        <div class="flex items-center gap-x-10">
-          <Radio name="perGuest" value={PricingOption.PerGuest} bind:group={form.pricingOption} color="purple">
-            <span class="text-light-black min-w-fit">Per guest</span>
-          </Radio>
-          <Radio
-            name="perUnit"
-            value={PricingOption.PerUnit}
-            bind:group={form.pricingOption}
-            color="purple"
-            class="w-fit"
-          >
-            <span class="text-light-gray min-w-fit">Per unit</span>
-          </Radio>
+      <div class="flex flex-row items-center">
+        <div class="flex flex-col gap-1 my-auto w-full">
+          <div class="text-black">Pricing option:</div>
+          <div class="flex items-center gap-x-10">
+            <Radio name="perGuest" value={PricingOption.PerGuest} bind:group={form.pricingOption} color="purple">
+              <span class="text-light-black min-w-fit">Per guest</span>
+            </Radio>
+            <Radio
+              name="perUnit"
+              value={PricingOption.PerUnit}
+              bind:group={form.pricingOption}
+              color="purple"
+              class="w-fit"
+            >
+              <span class="text-light-gray min-w-fit">Per unit</span>
+            </Radio>
+          </div>
+        </div>
+        <div class="flex flex-col gap-1 my-auto w-full">
+          <div class="text-black">Auto confirm reservation:</div>
+
+          <Checkbox bind:checked={form.autoConfirmReservation} color="purple" />
         </div>
       </div>
       {#if Number(form.minGuests) > Number(form.maxGuests)}
