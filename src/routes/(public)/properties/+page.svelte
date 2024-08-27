@@ -6,6 +6,7 @@
   import type { SearchProperty } from '$lib/types/property';
 
   let properties: SearchProperty[] = [];
+  export let searching = false;
 
   const fectchProperties = async (
     location: string,
@@ -13,6 +14,7 @@
     departureDate: string,
     guestsNumber: number
   ) => {
+    searching = true;
     const response = await api.accommodationService.property.searchProperties({
       startDate: arrivalDate,
       endDate: departureDate,
@@ -22,6 +24,7 @@
     properties = await Promise.all(
       response.data.map(async (property) => mapPropertyResponseToSearchProperty(property))
     );
+    searching = false;
   };
 
   const handleSearchProperties = async (event: CustomEvent) => {
@@ -39,7 +42,7 @@
 </svelte:head>
 
 <div class="h-full w-full p-4">
-  <SearchBar on:searchProperties={handleSearchProperties} />
+  <SearchBar on:searchProperties={handleSearchProperties} {searching} />
 
   <PropertiesDisplay {properties} />
 </div>

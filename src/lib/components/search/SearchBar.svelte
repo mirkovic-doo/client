@@ -4,6 +4,8 @@
   import { MagnifyingGlassSolid } from 'svelte-awesome-icons';
   import toast from 'svelte-french-toast';
 
+  export let searching = false;
+
   let location = '';
   let arrivalDate = '';
   let departureDate = '';
@@ -74,7 +76,10 @@
   </div>
 
   <button
-    class="flex items-center justify-center bg-purple-600 text-white rounded-full p-4 hover:bg-purple-800"
+    class="flex items-center justify-center bg-purple-600 text-white rounded-full p-4 hover:bg-purple-800 disabled:opacity-50 {searching
+      ? 'animate-spin'
+      : ''}"
+    disabled={searching}
     on:click={search}
   >
     <MagnifyingGlassSolid size="16" class="focus:outline-none" />
