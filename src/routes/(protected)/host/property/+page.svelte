@@ -147,7 +147,6 @@
         </div>
         <div class="flex flex-col gap-1 my-auto w-full">
           <div class="text-black">Auto confirm reservation:</div>
-
           <Checkbox bind:checked={form.autoConfirmReservation} color="purple" />
         </div>
       </div>
