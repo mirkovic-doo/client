@@ -7,6 +7,7 @@
   export let photo: string;
   export let alt = 'alt_text';
   export let deletable = false;
+  export let loaded = false;
 
   const dispatch = createEventDispatcher();
 
@@ -19,7 +20,7 @@
 
   const getPhoto = async () => {
     loading = true;
-    photoUrl = await getFileStorageUrl(photo);
+    photoUrl = loaded ? photo : await getFileStorageUrl(photo);
     loading = false;
   };
 

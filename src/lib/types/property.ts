@@ -15,6 +15,7 @@ export interface Property {
   maxGuests: number;
   pricingOption: PricingOption;
   autoConfirmReservation: boolean;
+  createdById: string;
 }
 
 export interface PropertyForm {

@@ -23,6 +23,7 @@ export const mapPropertyResponseToSearchProperty = async (
     totalPrice: property.totalPrice || 0,
     unitPrice: property.unitPrice || 0,
     autoConfirmReservation: property.autoConfirmReservation ?? true,
+    createdById: property.createdById || '',
   };
 };
 
@@ -38,6 +39,7 @@ export const mapPropertyResponseToProperty = async (response: PropertyResponse):
     maxGuests: response.maxGuests ?? 0,
     pricingOption: response.pricingOption || PricingOption.PerUnit,
     autoConfirmReservation: response.autoConfirmReservation ?? true,
+    createdById: response.createdById || '',
   };
 };
 

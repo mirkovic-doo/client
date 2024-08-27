@@ -4,13 +4,14 @@
   import type { Property, SearchProperty } from '$lib/types/property';
   import { Card } from 'flowbite-svelte';
   import { createEventDispatcher } from 'svelte';
-  import { CalendarDaySolid, PenSolid, PeopleGroupSolid, SackDollarSolid } from 'svelte-awesome-icons';
+  import { CalendarDaySolid, EyeSolid, PenSolid, PeopleGroupSolid, SackDollarSolid } from 'svelte-awesome-icons';
   import Button from '../common/Button.svelte';
   import ReservationConfirmModal from './ReservationConfirmModal.svelte';
 
   export let property: Property | SearchProperty;
   export let editable: boolean = false;
   export let showPrice = true;
+  export let explorable = false;
 
   let isConfirmModalOpen = false;
 
@@ -37,6 +38,14 @@
       on:click={() => dispatch('changeAvailabilityPeriod', property)}
     >
       <CalendarDaySolid size="18" class="focus:outline-none" />
+    </button>
+  {/if}
+  {#if explorable}
+    <button
+      class="absolute top-1 right-1 rounded-full text-white p-3 bg-grayscale-800"
+      on:click={() => dispatch('open', property)}
+    >
+      <EyeSolid size="18" class="focus:outline-none" />
     </button>
   {/if}
   <h5 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">

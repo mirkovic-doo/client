@@ -7,6 +7,7 @@
   export let noResultsMessage: string = 'No results';
   export let showPrice: boolean = true;
   export let editable: boolean = false;
+  export let explorable = false;
 </script>
 
 <div class="grid gap-4 p-10 sm:grid-cols-2 md:grid-cols-4">
@@ -21,9 +22,11 @@
         {property}
         {showPrice}
         {editable}
+        {explorable}
         on:changeAvailabilityPeriod
-        on:editProperty
         on:createReservation
+        on:editProperty
+        on:open
       />
     {/each}
   {/if}

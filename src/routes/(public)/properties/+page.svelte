@@ -4,7 +4,9 @@
   import PropertiesDisplay from '$lib/components/property/PropertiesDisplay.svelte';
   import SearchBar from '$lib/components/search/SearchBar.svelte';
   import { mapPropertyResponseToSearchProperty } from '$lib/mappers/property';
+  import authStore from '$lib/stores/authStore';
   import type { SearchProperty } from '$lib/types/property';
+  import { Button } from 'flowbite-svelte';
   import toast from 'svelte-french-toast';
 
   export let searching = false;
@@ -66,6 +68,9 @@
       guests: selectedGuestsNumber,
       propertyId: propertyId,
     });
+  const handleOpenProperty = (openEvent: CustomEvent) => {
+    const property = openEvent.detail;
+    goto(`/properties/profile?id=${property.id}`);
   };
 </script>
 
@@ -73,8 +78,18 @@
   <title>Properties</title>
 </svelte:head>
 
-<div class="h-full w-full p-4">
+<div class="h-full w-full p-4 flex flex-col">
+  {#if !$authStore.isLoggedIn}
+    <Button class="rounded-xl py-2 px-6 text-white bg-grayscale-800 w-fit ml-auto" on:click={() => goto('/login')}>
+      Create an account
+    </Button>
+  {/if}
   <SearchBar on:searchProperties={handleSearchProperties} {searching} />
 
-  <PropertiesDisplay {properties} on:createReservation={handleCreateReservation} />
+  <PropertiesDisplay
+    {properties}
+    explorable={true}
+    on:open={handleOpenProperty}
+    on:createReservation={handleCreateReservation}
+  />
 </div>
