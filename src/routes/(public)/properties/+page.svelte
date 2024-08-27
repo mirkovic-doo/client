@@ -16,10 +16,10 @@
   ) => {
     searching = true;
     const response = await api.accommodationService.property.searchProperties({
-      startDate: arrivalDate,
-      endDate: departureDate,
-      location: location,
-      guests: guestsNumber,
+      startDate: '2024-09-05',
+      endDate: '2024-09-10',
+      location: 'Los Angeles',
+      guests: 5,
     });
     properties = await Promise.all(
       response.data.map(async (property) => mapPropertyResponseToSearchProperty(property))
@@ -34,6 +34,17 @@
       event.detail.departureDate,
       event.detail.guestsNumber
     );
+  };
+
+  const createReservation = async (propertyId: string) => {
+    const response = await api.accommodationService.reservation.createReservation({
+      startDate: '2024-09-05',
+      endDate: '2024-09-10',
+      guests: 5,
+      propertyId: propertyId,
+    });
+
+    console.log(response.data);
   };
 </script>
 

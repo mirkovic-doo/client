@@ -1,16 +1,29 @@
 <script lang="ts">
   import { PricingOption } from '$lib/api/apiAccommodation';
   import DefaultHouse from '$lib/assets/default-house.png';
+  import api from '$lib/auth/http';
   import type { Property, SearchProperty } from '$lib/types/property';
   import { Card } from 'flowbite-svelte';
   import { createEventDispatcher } from 'svelte';
   import { CalendarDaySolid, PenSolid, PeopleGroupSolid, SackDollarSolid } from 'svelte-awesome-icons';
+  import Button from '../common/Button.svelte';
 
   export let property: Property | SearchProperty;
   export let editable: boolean = false;
   export let showPrice = true;
 
   const dispatch = createEventDispatcher();
+
+  const createReservation = async (propertyId: string) => {
+    const response = await api.accommodationService.reservation.createReservation({
+      startDate: '2024-09-05',
+      endDate: '2024-09-10',
+      guests: 5,
+      propertyId: propertyId,
+    });
+
+    console.log(response.data);
+  };
 </script>
 
 <Card
@@ -70,6 +83,7 @@
       {#if 'totalPrice' in property}
         <div class="flex gap-2"><SackDollarSolid size="20" /> Total for stay: ${property.totalPrice}</div>
       {/if}
+      <Button text="Reserve" on:click={() => createReservation(property.id)} />
     </div>
   {/if}
 </Card>
