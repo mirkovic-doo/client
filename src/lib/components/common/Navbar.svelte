@@ -51,7 +51,6 @@
   </Dropdown>
   <NavUl>
     <NavLi href="/" active={true}>Home</NavLi>
-    <NavLi href="/about">Example 1</NavLi>
-    <NavLi href="/docs/components/navbar">Example 2</NavLi>
+    <NavLi href="/reservations">Reservations</NavLi>
   </NavUl>
 </Navbar>

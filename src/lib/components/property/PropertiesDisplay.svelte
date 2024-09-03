@@ -17,7 +17,14 @@
     </div>
   {:else}
     {#each properties as property}
-      <PropertyCard {property} {showPrice} {editable} on:changeAvailabilityPeriod on:editProperty />
+      <PropertyCard
+        {property}
+        {showPrice}
+        {editable}
+        on:changeAvailabilityPeriod
+        on:editProperty
+        on:createReservation
+      />
     {/each}
   {/if}
 </div>

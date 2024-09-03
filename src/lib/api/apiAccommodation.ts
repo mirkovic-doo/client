@@ -386,6 +386,7 @@ export interface ModuleHandle {
 }
 
 export interface OkObjectResult {
+  [x: string]: any;
   value?: any;
   formatters?: IOutputFormatter[] | null;
   contentTypes?: string[] | null;
@@ -491,6 +492,14 @@ export interface PropertyResponse {
   maxGuests?: number;
   pricingOption?: PricingOption;
   autoConfirmReservation?: boolean;
+  /** @format uuid */
+  createdById?: string;
+  /** @format uuid */
+  updatedById?: string;
+  /** @format date-time */
+  createdAt?: string;
+  /** @format date-time */
+  updatedAt?: string;
 }
 
 export interface ReservationRequest {
@@ -518,6 +527,15 @@ export interface ReservationResponse {
   price?: number;
   /** @format uuid */
   propertyId?: string;
+  propertyName?: string | null;
+  /** @format uuid */
+  createdById?: string;
+  /** @format uuid */
+  updatedById?: string;
+  /** @format date-time */
+  createdAt?: string;
+  /** @format date-time */
+  updatedAt?: string;
 }
 
 export enum ReservationStatus {
@@ -552,6 +570,14 @@ export interface SearchPropertyResponse {
   maxGuests?: number;
   pricingOption?: PricingOption;
   autoConfirmReservation?: boolean;
+  /** @format uuid */
+  createdById?: string;
+  /** @format uuid */
+  updatedById?: string;
+  /** @format date-time */
+  createdAt?: string;
+  /** @format date-time */
+  updatedAt?: string;
   /** @format double */
   totalPrice?: number;
   /** @format double */
@@ -1017,21 +1043,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags AvailabilityPeriod
-     * @name GetAvailabilityPeriodsByPropertyId
-     * @request GET:/api/availabilityperiod/property/{propertyId}
-     */
-    getAvailabilityPeriodsByPropertyId: (propertyId: string, params: RequestParams = {}) =>
-      this.request<AvailabilityPeriodResponse[], string>({
-        path: `/api/availabilityperiod/property/${propertyId}`,
-        method: 'GET',
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags AvailabilityPeriod
      * @name CreateAvailabilityPeriod
      * @request POST:/api/availabilityperiod
      */
@@ -1146,6 +1157,20 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Property
+     * @name DeleteHostProperties
+     * @request DELETE:/api/property/host/delete/action
+     */
+    deleteHostProperties: (params: RequestParams = {}) =>
+      this.request<void, string>({
+        path: `/api/property/host/delete/action`,
+        method: 'DELETE',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Property
      * @name SearchProperties
      * @request GET:/api/property/search
      */
@@ -1165,6 +1190,36 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/api/property/search`,
         method: 'GET',
         query: query,
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Property
+     * @name GetAvailabilityPeriodsByPropertyId
+     * @request GET:/api/property/{id}/availabilityperiod
+     */
+    getAvailabilityPeriodsByPropertyId: (id: string, params: RequestParams = {}) =>
+      this.request<AvailabilityPeriodResponse[], string>({
+        path: `/api/property/${id}/availabilityperiod`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Property
+     * @name GetReservationsByPropertyId
+     * @request GET:/api/property/{id}/reservation
+     */
+    getReservationsByPropertyId: (id: string, params: RequestParams = {}) =>
+      this.request<ReservationResponse[], string>({
+        path: `/api/property/${id}/reservation`,
+        method: 'GET',
         format: 'json',
         ...params,
       }),
@@ -1221,21 +1276,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Reservation
-     * @name GetReservationsByPropertyId
-     * @request GET:/api/reservation/property/{propertyId}
-     */
-    getReservationsByPropertyId: (propertyId: string, params: RequestParams = {}) =>
-      this.request<ReservationResponse[], string>({
-        path: `/api/reservation/property/${propertyId}`,
-        method: 'GET',
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Reservation
      * @name ConfirmReservation
      * @request GET:/api/reservation/confirm/{id}
      */
@@ -1282,11 +1322,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags Reservation
      * @name GetNumberOfCancelledReservations
-     * @request GET:/api/reservation/cancellednum/guest/{guestId}
+     * @request GET:/api/reservation/cancellednum/guest/{userId}
      */
-    getNumberOfCancelledReservations: (guestId: string, params: RequestParams = {}) =>
+    getNumberOfCancelledReservations: (userId: string, params: RequestParams = {}) =>
       this.request<OkObjectResult, string>({
-        path: `/api/reservation/cancellednum/guest/${guestId}`,
+        path: `/api/reservation/cancellednum/guest/${userId}`,
         method: 'GET',
         format: 'json',
         ...params,
@@ -1297,11 +1337,40 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags Reservation
      * @name GetGuestReservations
-     * @request GET:/api/reservation/guest/{guestId}
+     * @request GET:/api/reservation/guest/{userId}
      */
-    getGuestReservations: (guestId: string, params: RequestParams = {}) =>
+    getGuestReservations: (userId: string, params: RequestParams = {}) =>
       this.request<ReservationResponse[], string>({
-        path: `/api/reservation/guest/${guestId}`,
+        path: `/api/reservation/guest/${userId}`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Reservation
+     * @name DeleteGuestReservations
+     * @request DELETE:/api/reservation/guest/delete/action/{userId}
+     */
+    deleteGuestReservations: (userId: string, params: RequestParams = {}) =>
+      this.request<void, string>({
+        path: `/api/reservation/guest/delete/action/${userId}`,
+        method: 'DELETE',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Reservation
+     * @name GetHostReservations
+     * @request GET:/api/reservation/host/{userId}
+     */
+    getHostReservations: (userId: string, params: RequestParams = {}) =>
+      this.request<ReservationResponse[], string>({
+        path: `/api/reservation/host/${userId}`,
         method: 'GET',
         format: 'json',
         ...params,
