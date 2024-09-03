@@ -11,6 +11,11 @@ import {
   type RequestParams as NotificationServiceRequestParams,
 } from '$lib/api/apiNotification';
 import {
+  Api as ReviewServiceApi,
+  type ApiConfig as ReviewServiceConfig,
+  type RequestParams as ReviewServiceRequestParams,
+} from '$lib/api/apiReview';
+import {
   Api as UserServiceApi,
   type ApiConfig as UserServiceConfig,
   type RequestParams as UserServiceRequestParams,
@@ -80,10 +85,31 @@ const apiAccommodationServiceConfig: AccommodationServiceConfig = {
   },
 };
 
+const apiReviewServiceConfig: ReviewServiceConfig = {
+  baseUrl: env.reviewServiceBaseUrl,
+  baseApiParams: {
+    secure: true,
+  },
+  securityWorker: async (): Promise<ReviewServiceRequestParams> => {
+    const { isLoggedIn, user } = get(authStore);
+    const requestParams: ReviewServiceRequestParams = {};
+
+    if (isLoggedIn && user) {
+      requestParams.headers = {
+        ...requestParams.headers,
+        Authorization: `Bearer ${await user.getIdToken()}`,
+      };
+    }
+
+    return requestParams;
+  },
+};
+
 const api = {
   userService: new UserServiceApi(apiUserServiceConfig),
   notificationService: new NotificationServiceApi(apiNotificationServiceConfig),
   accommodationService: new AccommodationServiceApi(apiAccommodationServiceConfig),
+  reviewService: new ReviewServiceApi(apiReviewServiceConfig),
 };
 
 export default api;

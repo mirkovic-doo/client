@@ -5,6 +5,7 @@
   import Input from '$lib/components/common/Input.svelte';
   import { formatValidationErrors, ValidateSingleFormField } from '$lib/validations/common';
 
+  import { goto } from '$app/navigation';
   import Button from '$lib/components/common/Button.svelte';
   import type { LoginForm } from '$lib/types/auth';
   import { loginFormConfig } from '$lib/utils/formConfigs';
@@ -32,7 +33,7 @@
       const result = logInFormSchema.safeParse(form);
       validationErrors = result.success ? null : formatValidationErrors(result);
       if (validationErrors === null) {
-        toast.promise(login(form.email, form.password), {
+        await toast.promise(login(form.email, form.password), {
           loading: 'Logging in...',
           success: 'Successfully logged in',
           error: (e) => e.message,
@@ -57,7 +58,7 @@
   <title>Login</title>
 </svelte:head>
 
-<div class="flex justify-center h-full items-center justify-evenly">
+<div class="flex h-full items-center justify-evenly">
   <div class="text-md mb-6 flex-col">
     <h2 class="mb-2 text-[32px] font-bold">Log In</h2>
     <span> Welcome to Buk It Easy</span>
@@ -95,5 +96,13 @@
         <a href="/signup" style="font-weight: bold; text-decoration: none; color: #4A225E;">Sign Up</a>
       </span>
     </div>
+
+    <Button
+      text="Or continue without loging in"
+      class="w-full bg-light-gray mt-4"
+      on:click={() => {
+        goto('/properties');
+      }}
+    />
   </form>
 </div>
