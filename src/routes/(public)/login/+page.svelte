@@ -16,7 +16,6 @@
     password: '',
   };
   let isSubmitting = false;
-  let token: string | null = null;
   let validationErrors: object | null = null;
   let error: string | null = null;
   let formConfig = structuredClone(loginFormConfig);
