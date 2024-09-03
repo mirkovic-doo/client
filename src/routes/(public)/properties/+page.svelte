@@ -1,12 +1,19 @@
 <script lang="ts">
+  import { goto } from '$app/navigation';
   import api from '$lib/auth/http';
   import PropertiesDisplay from '$lib/components/property/PropertiesDisplay.svelte';
   import SearchBar from '$lib/components/search/SearchBar.svelte';
   import { mapPropertyResponseToSearchProperty } from '$lib/mappers/property';
   import type { SearchProperty } from '$lib/types/property';
+  import toast from 'svelte-french-toast';
+
+  export let searching = false;
 
   let properties: SearchProperty[] = [];
-  export let searching = false;
+  let selectedLocation: string = '';
+  let selectedArrivalDate: string = '';
+  let selectedDepartureDate: string = '';
+  let selectedGuestsNumber: number = 0;
 
   const fectchProperties = async (
     location: string,
@@ -15,11 +22,15 @@
     guestsNumber: number
   ) => {
     searching = true;
+    selectedLocation = location;
+    selectedArrivalDate = arrivalDate;
+    selectedDepartureDate = departureDate;
+    selectedGuestsNumber = guestsNumber;
     const response = await api.accommodationService.property.searchProperties({
-      startDate: '2024-09-05',
-      endDate: '2024-09-10',
-      location: 'Los Angeles',
-      guests: 5,
+      startDate: arrivalDate,
+      endDate: departureDate,
+      location: location,
+      guests: guestsNumber,
     });
     properties = await Promise.all(
       response.data.map(async (property) => mapPropertyResponseToSearchProperty(property))
@@ -36,15 +47,25 @@
     );
   };
 
+  const handleCreateReservation = async (event: CustomEvent) => {
+    toast
+      .promise(createReservation(event.detail), {
+        loading: 'Creating reservation...',
+        success: 'Successfully created reservation',
+        error: (e) => e.message,
+      })
+      .then(() => {
+        goto('/reservations');
+      });
+  };
+
   const createReservation = async (propertyId: string) => {
-    const response = await api.accommodationService.reservation.createReservation({
-      startDate: '2024-09-05',
-      endDate: '2024-09-10',
-      guests: 5,
+    await api.accommodationService.reservation.createReservation({
+      startDate: selectedArrivalDate,
+      endDate: selectedDepartureDate,
+      guests: selectedGuestsNumber,
       propertyId: propertyId,
     });
-
-    console.log(response.data);
   };
 </script>
 
@@ -55,5 +76,5 @@
 <div class="h-full w-full p-4">
   <SearchBar on:searchProperties={handleSearchProperties} {searching} />
 
-  <PropertiesDisplay {properties} />
+  <PropertiesDisplay {properties} on:createReservation={handleCreateReservation} />
 </div>

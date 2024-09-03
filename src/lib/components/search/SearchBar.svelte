@@ -2,6 +2,7 @@
   import { Select } from 'flowbite-svelte';
   import { createEventDispatcher } from 'svelte';
   import { MagnifyingGlassSolid } from 'svelte-awesome-icons';
+  import toast from 'svelte-french-toast';
 
   export let searching = false;
 
@@ -14,10 +15,10 @@
   const dispatch = createEventDispatcher();
 
   const search = () => {
-    // if (!location || !arrivalDate || !departureDate) {
-    //   toast.error('Please complete all search fields to proceed.');
-    //   return;
-    // }
+    if (!location || !arrivalDate || !departureDate) {
+      toast.error('Please complete all search fields to proceed.');
+      return;
+    }
     dispatch('searchProperties', { location, arrivalDate, departureDate, guestsNumber });
   };
 </script>

@@ -44,7 +44,7 @@
 
   const getAvailabilityPeriods = async () => {
     if (propertyId) {
-      const response = await api.accommodationService.availabilityperiod.getAvailabilityPeriodsByPropertyId(propertyId);
+      const response = await api.accommodationService.property.getAvailabilityPeriodsByPropertyId(propertyId);
       availabilityPeriods = response.data.map(mapAvailabilityPeriodResponseToAvailabilityPeriod);
     }
   };
