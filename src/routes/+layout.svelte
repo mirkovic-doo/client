@@ -39,6 +39,8 @@
         let redirectUrl = $page.url.searchParams.get('redirectUrl');
         if (redirectUrl !== null) {
           await goto(redirectUrl);
+        } else if ($page.url.pathname === '/login' || $page.url.pathname === '/signup') {
+          await goto('/');
         }
       } else {
         $authStore = {
