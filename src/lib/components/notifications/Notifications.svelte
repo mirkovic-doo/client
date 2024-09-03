@@ -69,6 +69,12 @@
     switch (notification.type) {
       case NotificationType.ReviewRecieved:
         return `You have recieved a review from ${notification.sender.firstName} ${notification.sender.lastName}.`;
+      case NotificationType.ReservationRequest:
+        return `You have recieved a reservation request from ${notification.sender.firstName} ${notification.sender.lastName}.`;
+      case NotificationType.ReservationResponse:
+        return `Your have received a response from ${notification.sender.firstName} ${notification.sender.lastName}.`;
+      case NotificationType.ReservationCancellation:
+        return `Your reservation has been cancelled by ${notification.sender.firstName} ${notification.sender.lastName}.`;
       default:
         return `New notification from ${notification.sender.firstName} ${notification.sender.lastName}.`;
     }
@@ -121,7 +127,7 @@
 
   {#if notificationsDialogOpen}
     <dialog open={true} class="top-14 left-[-14vw] w-[20vw] rounded-xl z-[9999] bg-grayscale-800 text-white">
-      <div class="flex flex-col gap-y-2 p-2 min-h-[25vh]">
+      <div class="flex flex-col gap-y-2 p-2 min-h-[25vh] max-h-[80vh] overflow-y-auto">
         <h1 class="text-lg font-bold">Notifications</h1>
         {#if loading}
           <Spinner class="mx-auto my-auto" size="14" color="white" />
