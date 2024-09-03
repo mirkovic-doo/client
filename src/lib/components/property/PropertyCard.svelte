@@ -5,12 +5,20 @@
   import { Card } from 'flowbite-svelte';
   import { createEventDispatcher } from 'svelte';
   import { CalendarDaySolid, PenSolid, PeopleGroupSolid, SackDollarSolid } from 'svelte-awesome-icons';
+  import Button from '../common/Button.svelte';
+  import ReservationConfirmModal from './ReservationConfirmModal.svelte';
 
   export let property: Property | SearchProperty;
   export let editable: boolean = false;
   export let showPrice = true;
 
+  let isConfirmModalOpen = false;
+
   const dispatch = createEventDispatcher();
+
+  const handleReservation = () => {
+    dispatch('createReservation', property.id);
+  };
 </script>
 
 <Card
@@ -71,5 +79,10 @@
         <div class="flex gap-2"><SackDollarSolid size="20" /> Total for stay: ${property.totalPrice}</div>
       {/if}
     </div>
+    <div class="flex mt-4">
+      <Button text="Reserve" on:click={() => (isConfirmModalOpen = true)} extendClass="ml-auto" />
+    </div>
   {/if}
+
+  <ReservationConfirmModal bind:open={isConfirmModalOpen} on:reserve={handleReservation} />
 </Card>

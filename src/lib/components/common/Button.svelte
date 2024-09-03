@@ -5,12 +5,13 @@
   export let disabledClasses = 'bg-grayscale-100';
   export let color = 'bg-light-gray';
   export let baseClass = 'py-[10px] px-[35px] rounded-[50px] text-sm/[17px] text-white';
+  export let extendClass = '';
 </script>
 
 <button
   on:click
   {disabled}
-  class={`${baseClass} ${color} ${disabled ? disabledClasses : ''} ${$$restProps.class ?? ''}`}
+  class={`${baseClass} ${color} ${disabled ? disabledClasses : ''} ${$$restProps.class ?? ''} ${extendClass}`}
   data-testid={text}
 >
   {#if iconOnLeft}
