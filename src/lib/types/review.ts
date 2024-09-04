@@ -2,6 +2,7 @@ import type { ReviewType } from '$lib/api/apiReview';
 import type { User } from './user';
 
 export interface Review {
+  id: string;
   reservationId: string;
   revieweeId: string;
   type: ReviewType;

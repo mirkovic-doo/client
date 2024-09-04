@@ -14,5 +14,6 @@ export const mapReservationResponseToReservation = (reservation: ReservationResp
     propertyName: reservation.propertyName || '',
     createdById: reservation.createdById || '',
     createdAt: reservation.createdAt || '',
+    cancellationsCount: 0,
   };
 };

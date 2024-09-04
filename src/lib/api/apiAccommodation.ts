@@ -1375,19 +1375,5 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         format: 'json',
         ...params,
       }),
-
-    /**
-     * No description
-     *
-     * @tags Reservation
-     * @name DeleteGuestReservations
-     * @request DELETE:/api/reservation/guest/delete/action/{userId}
-     */
-    deleteGuestReservations: (userId: string, params: RequestParams = {}) =>
-      this.request<void, string>({
-        path: `/api/reservation/guest/delete/action/${userId}`,
-        method: 'DELETE',
-        ...params,
-      }),
   };
 }

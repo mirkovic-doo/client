@@ -1,12 +1,13 @@
 <script lang="ts">
   import { PricingOption } from '$lib/api/apiAccommodation';
   import DefaultHouse from '$lib/assets/default-house.png';
+  import authStore from '$lib/stores/authStore';
   import type { Property, SearchProperty } from '$lib/types/property';
   import { Card } from 'flowbite-svelte';
   import { createEventDispatcher } from 'svelte';
   import { CalendarDaySolid, EyeSolid, PenSolid, PeopleGroupSolid, SackDollarSolid } from 'svelte-awesome-icons';
   import Button from '../common/Button.svelte';
-  import ReservationConfirmModal from './ReservationConfirmModal.svelte';
+  import ConfirmationModal from './ConfirmationModal.svelte';
 
   export let property: Property | SearchProperty;
   export let editable: boolean = false;
@@ -73,7 +74,7 @@
           </div>
         </div>
         <div class="flex items-center">
-          <div>Reservation confirmation:</div>
+          <div>Auto Confirm:</div>
           <div class="ml-2">
             {property.autoConfirmReservation ? 'Auto' : 'Manual'}
           </div>
@@ -83,15 +84,23 @@
   </div>
   {#if showPrice}
     <div class="flex justify-between mt-1">
-      <a href={`/properties/${property.id}`} class="text-purple-200 hover:underline">View Details </a>
+      <a href={`/properties/profile?id=${property.id}`} class="text-purple-200 hover:underline">View Details </a>
       {#if 'totalPrice' in property}
         <div class="flex gap-2"><SackDollarSolid size="20" /> Total for stay: ${property.totalPrice}</div>
       {/if}
     </div>
-    <div class="flex mt-4">
-      <Button text="Reserve" on:click={() => (isConfirmModalOpen = true)} extendClass="ml-auto" />
-    </div>
+    {#if $authStore.isLoggedIn}
+      <div class="flex mt-4">
+        <Button text="Reserve" on:click={() => (isConfirmModalOpen = true)} extendClass="ml-auto" />
+      </div>
+    {/if}
   {/if}
 
-  <ReservationConfirmModal bind:open={isConfirmModalOpen} on:reserve={handleReservation} />
+  <ConfirmationModal
+    bind:open={isConfirmModalOpen}
+    title="Confirm Reservation"
+    content="Are you sure you want to reserve this property?"
+    confirmText="Confirm"
+    onConfirm={handleReservation}
+  />
 </Card>
