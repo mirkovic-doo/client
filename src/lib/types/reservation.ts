@@ -12,4 +12,6 @@ export interface Reservation {
   createdById: string;
   cancellationsCount?: number;
   createdAt: string;
+  hasHostReview?: boolean;
+  hasPropertyReview?: boolean;
 }

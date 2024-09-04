@@ -20,6 +20,7 @@
     try {
       $userStore = null;
       await signOut(auth);
+      await goto('/login');
     } catch (e) {
       console.log(e);
     }

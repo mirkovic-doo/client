@@ -36,10 +36,7 @@
           $userStore = mapUserResponseToUser(response.data);
         }
 
-        let redirectUrl = $page.url.searchParams.get('redirectUrl');
-        if (redirectUrl !== null) {
-          await goto(redirectUrl);
-        } else if ($page.url.pathname === '/login' || $page.url.pathname === '/signup') {
+        if ($page.url.pathname === '/login' || $page.url.pathname === '/signup') {
           await goto('/');
         }
       } else {
@@ -47,15 +44,6 @@
           user: null,
           isLoggedIn: false,
         };
-
-        const redirectUrl = $page.url.pathname;
-        if (
-          !redirectUrl.startsWith('/login') &&
-          !redirectUrl.startsWith('/signup') &&
-          !redirectUrl.startsWith('/properties')
-        ) {
-          await goto(`/login?redirectUrl=${encodeURIComponent(redirectUrl)}`);
-        }
       }
 
       authInitialized = true;

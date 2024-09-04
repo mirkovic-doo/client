@@ -5,17 +5,26 @@
   import SearchBar from '$lib/components/search/SearchBar.svelte';
   import { mapPropertyResponseToSearchProperty } from '$lib/mappers/property';
   import authStore from '$lib/stores/authStore';
+  import searchStore from '$lib/stores/searchStore';
   import type { SearchProperty } from '$lib/types/property';
   import { Button } from 'flowbite-svelte';
+  import { onMount } from 'svelte';
   import toast from 'svelte-french-toast';
 
   export let searching = false;
 
   let properties: SearchProperty[] = [];
-  let selectedLocation: string = '';
-  let selectedArrivalDate: string = '';
-  let selectedDepartureDate: string = '';
-  let selectedGuestsNumber: number = 0;
+
+  onMount(async () => {
+    if ($searchStore.location && $searchStore.arrivalDate && $searchStore.departureDate) {
+      await fectchProperties(
+        $searchStore.location,
+        $searchStore.arrivalDate,
+        $searchStore.departureDate,
+        $searchStore.guestsNumber
+      );
+    }
+  });
 
   const fectchProperties = async (
     location: string,
@@ -24,10 +33,6 @@
     guestsNumber: number
   ) => {
     searching = true;
-    selectedLocation = location;
-    selectedArrivalDate = arrivalDate;
-    selectedDepartureDate = departureDate;
-    selectedGuestsNumber = guestsNumber;
     const response = await api.accommodationService.property.searchProperties({
       startDate: arrivalDate,
       endDate: departureDate,
@@ -41,6 +46,12 @@
   };
 
   const handleSearchProperties = async (event: CustomEvent) => {
+    $searchStore = {
+      location: event.detail.location,
+      arrivalDate: event.detail.arrivalDate,
+      departureDate: event.detail.departureDate,
+      guestsNumber: event.detail.guestsNumber,
+    };
     await fectchProperties(
       event.detail.location,
       event.detail.arrivalDate,
@@ -63,11 +74,13 @@
 
   const createReservation = async (propertyId: string) => {
     await api.accommodationService.reservation.createReservation({
-      startDate: selectedArrivalDate,
-      endDate: selectedDepartureDate,
-      guests: selectedGuestsNumber,
+      startDate: $searchStore.arrivalDate,
+      endDate: $searchStore.departureDate,
+      guests: $searchStore.guestsNumber,
       propertyId: propertyId,
     });
+  };
+
   const handleOpenProperty = (openEvent: CustomEvent) => {
     const property = openEvent.detail;
     goto(`/properties/profile?id=${property.id}`);
@@ -80,7 +93,7 @@
 
 <div class="h-full w-full p-4 flex flex-col">
   {#if !$authStore.isLoggedIn}
-    <Button class="rounded-xl py-2 px-6 text-white bg-grayscale-800 w-fit ml-auto" on:click={() => goto('/login')}>
+    <Button class="rounded-xl mb-4 py-2 px-6 text-white bg-grayscale-800 w-fit ml-auto" on:click={() => goto('/login')}>
       Create an account
     </Button>
   {/if}
