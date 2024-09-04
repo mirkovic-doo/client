@@ -2,8 +2,10 @@
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
   import { PricingOption } from '$lib/api/apiAccommodation';
+  import { ReviewType } from '$lib/api/apiReview';
   import api from '$lib/auth/http';
   import StoragePhotoDisplayer from '$lib/components/common/StoragePhotoDisplayer.svelte';
+  import ReviewCard from '$lib/components/property/ReviewCard.svelte';
   import { mapPropertyResponseToProperty } from '$lib/mappers/property';
   import { mapReviewResponseToReview } from '$lib/mappers/review';
   import authStore from '$lib/stores/authStore';
@@ -11,7 +13,8 @@
   import type { Review } from '$lib/types/review';
   import { Button, Spinner } from 'flowbite-svelte';
   import { onMount } from 'svelte';
-  import { LockSolid, StarSolid } from 'svelte-awesome-icons';
+  import { LockSolid } from 'svelte-awesome-icons';
+  import toast from 'svelte-french-toast';
 
   let id: string | null = $page.url?.searchParams.get('id') ?? null;
   let property: Property | null = null;
@@ -55,6 +58,54 @@
         hostReviews = [...hostReviews, mappedReview];
       });
     }
+  };
+
+  const handleDeleteReview = async (event: CustomEvent) => {
+    const review = event.detail as Review;
+    toast
+      .promise(deleteReview(review.id ?? ''), {
+        loading: 'Deleting review...',
+        success: 'Successfully deleted review',
+        error: (e) => e.message,
+      })
+      .then(() => {
+        if (review.type === ReviewType.Host) {
+          hostReviews = hostReviews.filter((r) => r.id !== review.id);
+        } else {
+          propertyReviews = propertyReviews.filter((r) => r.id !== review.id);
+        }
+      });
+  };
+
+  const deleteReview = async (reviewId: string) => {
+    await api.reviewService.review.deleteReview(reviewId);
+  };
+
+  const handleUpdateReview = async (event: CustomEvent) => {
+    const review = event.detail.review as Review;
+    const updatedComment = event.detail.comment;
+    const updatedRating = event.detail.rating;
+    toast
+      .promise(updateReview(review.id ?? '', updatedComment, updatedRating), {
+        loading: 'Updating review...',
+        success: 'Successfully updated review',
+        error: (e) => e.message,
+      })
+      .then(() => {
+        if (review.type === ReviewType.Host) {
+          hostReviews = hostReviews.map((r) =>
+            r.id === review.id ? { ...r, comment: updatedComment, rating: updatedRating } : r
+          );
+        } else {
+          propertyReviews = propertyReviews.map((r) =>
+            r.id === review.id ? { ...r, comment: updatedComment, rating: updatedRating } : r
+          );
+        }
+      });
+  };
+
+  const updateReview = async (reviewId: string, comment: string, rating: number) => {
+    await api.reviewService.review.updateReview({ id: reviewId, comment, rating });
   };
 </script>
 
@@ -113,18 +164,7 @@
             <div class="text-2xl font-semibold">Property reviews:</div>
             <div class="overflow-auto">
               {#each propertyReviews as review}
-                <div class="flex flex-col gap-y-2 border border-grayscale-800 rounded-xl p-4">
-                  <div class="text-[18px] font-semibold flex items-center">
-                    <span>
-                      Rating: {review.rating}
-                    </span>
-                    <StarSolid color="yellow" size="15" class="focus:outline-none ml-2" />
-                  </div>
-                  <div>From: {review.createdBy.firstName} {review.createdBy.lastName}</div>
-                  <div class="break-words max-w-[300px]">
-                    {review.comment}
-                  </div>
-                </div>
+                <ReviewCard {review} on:deleteReview={handleDeleteReview} on:updateReview={handleUpdateReview} />
               {/each}
             </div>
           </div>
@@ -133,18 +173,7 @@
           <div class="text-2xl font-semibold sticky">Host reviews:</div>
           <div class="overflow-auto">
             {#each hostReviews as review}
-              <div class="flex flex-col gap-y-2 border border-grayscale-800 rounded-xl p-4">
-                <div class="text-[18px] font-semibold flex items-center">
-                  <span>
-                    Rating: {review.rating}
-                  </span>
-                  <StarSolid color="yellow" size="15" class="focus:outline-none ml-2" />
-                </div>
-                <div>From: {review.createdBy.firstName} {review.createdBy.lastName}</div>
-                <div class="break-words max-w-[300px]">
-                  {review.comment}
-                </div>
-              </div>
+              <ReviewCard {review} on:deleteReview={handleDeleteReview} on:updateReview={handleUpdateReview} />
             {/each}
           </div>
         </div>
