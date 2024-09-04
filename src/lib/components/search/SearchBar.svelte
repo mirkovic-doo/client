@@ -1,4 +1,5 @@
 <script>
+  import searchStore from '$lib/stores/searchStore';
   import { Select } from 'flowbite-svelte';
   import { createEventDispatcher } from 'svelte';
   import { MagnifyingGlassSolid } from 'svelte-awesome-icons';
@@ -6,10 +7,10 @@
 
   export let searching = false;
 
-  let location = '';
-  let arrivalDate = '';
-  let departureDate = '';
-  let guestsNumber = 1;
+  let location = $searchStore.location;
+  let arrivalDate = $searchStore.arrivalDate;
+  let departureDate = $searchStore.departureDate;
+  let guestsNumber = $searchStore.guestsNumber;
   let guestsNumberOptions = Array.from({ length: 20 }, (_, i) => i + 1);
 
   const dispatch = createEventDispatcher();

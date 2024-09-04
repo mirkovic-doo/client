@@ -5,6 +5,7 @@ import { mapUserResponseToUser } from './user';
 
 export const mapReviewResponseToReview = async (response: ReviewResponse): Promise<Review> => {
   return {
+    id: response.id || '',
     reservationId: response.reservationId || '',
     revieweeId: response.revieweeId || '',
     type: response.type ?? ReviewType.Host,
