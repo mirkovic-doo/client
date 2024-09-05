@@ -68,13 +68,17 @@
   const getNotificationText = (notification: BIENotification): string => {
     switch (notification.type) {
       case NotificationType.ReviewRecieved:
-        return `You have recieved a review from ${notification.sender.firstName} ${notification.sender.lastName}.`;
+        return `You have received a review from ${notification.sender.firstName} ${notification.sender.lastName}.`;
       case NotificationType.ReservationRequest:
-        return `You have recieved a reservation request from ${notification.sender.firstName} ${notification.sender.lastName}.`;
-      case NotificationType.ReservationResponse:
-        return `Your have received a response from ${notification.sender.firstName} ${notification.sender.lastName}.`;
-      case NotificationType.ReservationCancellation:
+        return `You have received a reservation request from ${notification.sender.firstName} ${notification.sender.lastName}.`;
+      case NotificationType.ReservationCancelled:
         return `Your reservation has been cancelled by ${notification.sender.firstName} ${notification.sender.lastName}.`;
+      case NotificationType.ReservationConfirmed:
+        return `Your reservation has been confirmed by ${notification.sender.firstName} ${notification.sender.lastName}.`;
+      case NotificationType.ReservationRejected:
+        return `Your reservation has been rejected by ${notification.sender.firstName} ${notification.sender.lastName}.`;
+      case NotificationType.ReservationDeleted:
+        return `Your reservation has been deleted by ${notification.sender.firstName} ${notification.sender.lastName}.`;
       default:
         return `New notification from ${notification.sender.firstName} ${notification.sender.lastName}.`;
     }

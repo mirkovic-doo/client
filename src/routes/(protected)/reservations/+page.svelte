@@ -7,8 +7,9 @@
   import { mapReservationResponseToReservation } from '$lib/mappers/reservation';
   import userStore from '$lib/stores/userStore';
   import type { Reservation } from '$lib/types/reservation';
-  import { reservationStatusMessages } from '$lib/utils/constants';
+  import { reservationStatusMessages, SendNotificationMethodName } from '$lib/utils/constants';
   import { formatToDateDisplay } from '$lib/utils/date';
+  import { createFileUploadHubConnection } from '$lib/utils/hub';
   import { Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell } from 'flowbite-svelte';
   import { onMount } from 'svelte';
   import toast from 'svelte-french-toast';
@@ -20,12 +21,21 @@
   let comment: string = '';
   let reviewType: ReviewType = ReviewType.Host;
 
-  onMount(async () => {
+  const fetchReservations = async () => {
     if ($userStore?.isGuest) {
       await fetchGuestReservations();
     } else {
       await fetchHostReservations();
     }
+  };
+
+  onMount(async () => {
+    await fetchReservations();
+
+    const connection = createFileUploadHubConnection();
+    connection.on(SendNotificationMethodName, async (data) => {
+      await fetchReservations();
+    });
   });
 
   const fetchGuestReservations = async () => {
@@ -161,16 +171,12 @@
   };
 
   const leaveReview = async () => {
-    let revieweeId = selectedReservation?.propertyId;
-    if (reviewType === ReviewType.Host) {
-      const propertyResponse = await api.accommodationService.property.getProperty(
-        selectedReservation?.propertyId ?? ''
-      );
-      revieweeId = propertyResponse.data.createdById;
-    }
+    const propertyResponse = await api.accommodationService.property.getProperty(selectedReservation?.propertyId ?? '');
+    const hostId = propertyResponse.data.createdById;
     await api.reviewService.review.createReview({
       reservationId: selectedReservation?.id,
-      revieweeId: revieweeId,
+      revieweeId: reviewType === ReviewType.Host ? hostId : selectedReservation?.propertyId,
+      hostId: hostId,
       type: reviewType,
       comment: comment,
       rating: rating,

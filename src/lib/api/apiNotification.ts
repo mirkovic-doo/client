@@ -37,10 +37,40 @@ export interface NotificationResponse {
   updatedAt?: string;
 }
 
+export interface NotificationSettingRequest {
+  /** @format uuid */
+  id: string;
+  isReservationRequestNotificationEnabled?: boolean;
+  isReservationConfirmedNotificationEnabled?: boolean;
+  isReservationRejectedNotificationEnabled?: boolean;
+  isReservationDeletedNotificationEnabled?: boolean;
+  isReservationCancelledNotificationEnabled?: boolean;
+  isReviewRecievedNotificationEnabled?: boolean;
+}
+
+export interface NotificationSettingResponse {
+  /** @format uuid */
+  id?: string;
+  /** @format uuid */
+  userId?: string;
+  isReservationRequestNotificationEnabled?: boolean;
+  isReservationConfirmedNotificationEnabled?: boolean;
+  isReservationRejectedNotificationEnabled?: boolean;
+  isReservationDeletedNotificationEnabled?: boolean;
+  isReservationCancelledNotificationEnabled?: boolean;
+  isReviewRecievedNotificationEnabled?: boolean;
+  /** @format date-time */
+  createdAt?: string;
+  /** @format date-time */
+  updatedAt?: string;
+}
+
 export enum NotificationType {
   ReservationRequest = 'ReservationRequest',
-  ReservationResponse = 'ReservationResponse',
-  ReservationCancellation = 'ReservationCancellation',
+  ReservationCancelled = 'ReservationCancelled',
+  ReservationConfirmed = 'ReservationConfirmed',
+  ReservationRejected = 'ReservationRejected',
+  ReservationDeleted = 'ReservationDeleted',
   ReviewRecieved = 'ReviewRecieved',
 }
 
@@ -362,6 +392,39 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<void, string>({
         path: `/api/notification/mark/all/as/read`,
         method: 'PUT',
+        ...params,
+      }),
+  };
+  notificationsetting = {
+    /**
+     * No description
+     *
+     * @tags NotificationSetting
+     * @name GetUserNotificationSetting
+     * @request GET:/api/notificationsetting/{userId}
+     */
+    getUserNotificationSetting: (userId: string, params: RequestParams = {}) =>
+      this.request<NotificationSettingResponse, string>({
+        path: `/api/notificationsetting/${userId}`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags NotificationSetting
+     * @name UpdateNotificationSetting
+     * @request PUT:/api/notificationsetting
+     */
+    updateNotificationSetting: (data: NotificationSettingRequest, params: RequestParams = {}) =>
+      this.request<NotificationSettingResponse, string>({
+        path: `/api/notificationsetting`,
+        method: 'PUT',
+        body: data,
+        type: ContentType.Json,
+        format: 'json',
         ...params,
       }),
   };
