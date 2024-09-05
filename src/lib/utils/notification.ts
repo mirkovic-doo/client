@@ -24,10 +24,14 @@ const mapNotificationTypeToNotificationType = (type: any): NotificationType => {
     case 1:
       return NotificationType.ReservationRequest;
     case 2:
-      return NotificationType.ReservationResponse;
+      return NotificationType.ReservationCancelled;
     case 3:
-      return NotificationType.ReservationCancellation;
+      return NotificationType.ReservationConfirmed;
     case 4:
+      return NotificationType.ReservationRejected;
+    case 5:
+      return NotificationType.ReservationDeleted;
+    case 6:
       return NotificationType.ReviewRecieved;
     default:
       return type;

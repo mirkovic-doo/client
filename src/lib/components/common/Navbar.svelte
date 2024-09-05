@@ -47,6 +47,7 @@
       <span class="block truncate text-sm font-medium">{$userStore?.email}</span>
     </DropdownHeader>
     <DropdownItem on:click={() => goto('/user/profile')}>Profile</DropdownItem>
+    <DropdownItem on:click={() => goto('/user/notification-settings')}>Settings</DropdownItem>
     <DropdownDivider />
     <DropdownItem on:click={handleLogOut}>Sign out</DropdownItem>
   </Dropdown>
