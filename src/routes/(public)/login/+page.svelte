@@ -70,7 +70,7 @@
       <h2 class="mb-2 text-[32px] font-bold">Log In</h2>
       <span> Welcome to Buk It Easy</span>
     </div>
-    <form on:submit|preventDefault class="w-[20vw] p-8 bg-white rounded-xl flex flex-col gap-2">
+    <form on:submit|preventDefault class="w-[22vw] p-8 bg-white rounded-xl flex flex-col gap-2">
       {#each formConfig as propertyConfig}
         <Input
           class="min-h-[10vh]"
@@ -104,9 +104,14 @@
         </span>
       </div>
 
+      <div class="flex items-center justify-center">
+        <hr class="flex-grow border-gray-300" />
+        <span class="px-4 pb-1 text-sm text-black">or</span>
+        <hr class="flex-grow border-gray-300" />
+      </div>
       <Button
-        text="Or continue without loging in"
-        class="w-full bg-light-gray mt-4"
+        text="Continue without account"
+        class="w-full bg-light-gray py-4"
         on:click={() => {
           goto('/properties');
         }}

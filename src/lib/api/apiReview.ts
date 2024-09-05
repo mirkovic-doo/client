@@ -14,6 +14,8 @@ export interface ReviewRequest {
   reservationId?: string;
   /** @format uuid */
   revieweeId?: string;
+  /** @format uuid */
+  hostId?: string;
   type?: ReviewType;
   comment?: string | null;
   /** @format double */
