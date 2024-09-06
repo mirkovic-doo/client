@@ -1,6 +1,6 @@
 {
   "name": "buk.it.easy",
-  "version": "0.0.1",
+  "version": "v0.0.1",
   "scripts": {
     "dev": "npm run check && vite dev --port 3009",
     "build": "npm run check && vite build",
@@ -40,13 +40,17 @@
     "tslib": "^2.4.1",
     "typescript": "^5.0.0",
     "vite": "^4.3.0",
-    "vitest": "^0.25.3"
+    "vitest": "^0.25.3",
+    "zod": "3.21.4"
   },
   "type": "module",
   "dependencies": {
+    "@microsoft/signalr": "^8.0.7",
     "@sentry/sveltekit": "7.73.0",
     "@types/lodash": "^4.17.0",
     "@zerodevx/svelte-toast": "0.9.5",
-    "axios": "1.5.0"
+    "axios": "1.5.0",
+    "firebase": "^10.13.0",
+    "svelte-french-toast": "1.2.0"
   }
 }
